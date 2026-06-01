@@ -1,0 +1,20 @@
+# MoCo v3 Requirements
+# =============================
+# MoCo v3: Momentum Contrast for Visual Representation Learning
+# https://github.com/facebookresearch/moco-v3
+
+# Core dependencies
+torch>=1.7.0                 # PyTorch (cuda.amp requires >=1.6, recommended >=1.7)
+torchvision>=0.8.0           # Torchvision (should match torch version)
+timm>=0.4.12                 # pytorch-image-models (for Vision Transformer implementation)
+Pillow>=8.0.0                # PIL (ImageFilter, ImageOps for data augmentation)
+
+# Numerical / scientific
+numpy>=1.19.0                # Array operations (np.broadcast_to, etc.)
+scipy>=1.5.0                 # scipy.io for .mat file loading (Oxford Flowers dataset)
+
+# Logging / visualization
+tensorboard>=2.4.0           # SummaryWriter for training logging
+
+# Optional: if you need to download datasets programmatically
+requests>=2.25.0             # Used for downloading datasets (e.g., CIFAR)

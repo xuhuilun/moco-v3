@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+ENV/
+
+# Datasets (downloaded automatically by training scripts)
+data/
+datasets/
+*/raw/                     # e.g., CIFAR-10/100 raw downloads
+*.tar.gz
+*.tar
+*.zip
+*imagenet*/                 # ImageNet is typically large and downloaded separately
+
+# Checkpoints / model weights (generated during training)
+*.pth
+*.pth.tar
+*.ckpt
+checkpoints/
+saved_models/
+output/
+
+# Logs (TensorBoard, etc.)
+runs/                       # TensorBoard logs
+logs/
+*.tfevents*
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Jupyter (if any notebooks left in repo)
+.ipynb_checkpoints/
+
+# Environment / secrets
+*.env
+*.env.local
+
+# OS generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
