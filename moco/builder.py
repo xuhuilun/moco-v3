@@ -52,7 +52,7 @@ class MoCo(nn.Module):
                 # for simplicity, we further removed gamma in BN
                 # 计算余弦相似度，无须进行缩放
                 mlp.append(nn.BatchNorm1d(dim2, affine=False))
-
+        # projector
         return nn.Sequential(*mlp)
 
     def _build_projector_and_predictor_mlps(self, dim, mlp_dim):
@@ -74,10 +74,14 @@ class MoCo(nn.Module):
         k = concat_all_gather(k)
         # Einstein sum is more intuitive
         logits = torch.einsum("nc,mc->nm", [q, k]) / self.T
-        N = logits.shape[0]  # batch size per GPU
+        # batch size per GPU
+        N = logits.shape[0]
+
+        # labels per GPU
         labels = (
             torch.arange(N, dtype=torch.long) + N * torch.distributed.get_rank()
         ).cuda()
+        # logits: NxM labels：N指向对于q哪个是正样本的k，即q和k的相似度
         return nn.CrossEntropyLoss()(logits, labels) * (2 * self.T)
 
     def forward(self, x1, x2, m):
@@ -143,6 +147,7 @@ def concat_all_gather(tensor):
     tensors_gather = [
         torch.ones_like(tensor) for _ in range(torch.distributed.get_world_size())
     ]
+    # 分布式将所有GPU的tensors进行拼接
     torch.distributed.all_gather(tensors_gather, tensor, async_op=False)
 
     output = torch.cat(tensors_gather, dim=0)
