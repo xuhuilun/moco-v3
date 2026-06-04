@@ -41,7 +41,7 @@ class LARS(torch.optim.Optimizer):
                     update_norm = torch.norm(dp)
                     # 标量
                     one = torch.ones_like(param_norm)
-                    # 自适应缩放，根据参数大小和梯度信号大小确定缩放比例
+                    # 自适应缩放，根据参数w的L2范数和梯度dp L2范数，定义缩放比例
                     q = torch.where(
                         param_norm > 0.0,
                         torch.where(
@@ -55,11 +55,11 @@ class LARS(torch.optim.Optimizer):
                     dp = dp.mul(q)
                 # 参数状态
                 param_state = self.state[p]
-                # 动量缓冲区：过去更新的梯度
+                # Momentum SGD: Gradient = Momentum * History_Gradient + Current Gradient
                 if "mu" not in param_state:
                     param_state["mu"] = torch.zeros_like(p)
                 mu = param_state["mu"]
-                # 过去平均梯度*动量系数+当前梯度
+
                 mu.mul_(g["momentum"]).add_(dp)
-                # 梯度更新
+                # add_函数实现梯度原地更新
                 p.add_(mu, alpha=-g["lr"])
